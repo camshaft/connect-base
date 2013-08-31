@@ -31,6 +31,7 @@ module.exports = function(options) {
        (base.port == 443 && base.protocol === 'https')) delete base.port;
 
     // Remove trailing slashes
+    if (base.pathname === '/') base.pathname = '';
     if (base.pathname[base.pathname.length - 1] === '/') base.pathname = base.pathname.slice(0, base.pathname.length);
 
     debug('', base);
