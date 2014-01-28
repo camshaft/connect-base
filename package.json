@@ -1,6 +1,6 @@
 {
   "name": "connect-base",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Get the base url for Express/Connect",
   "main": "index.js",
   "directories": {
@@ -11,9 +11,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/CamShaft/connect-base.git"
+    "url": "git://github.com/camshaft/connect-base.git"
   },
-  "author": "Cameron Bytheway <cameron@nujii.com>",
+  "author": "Cameron Bytheway <bytheway.cameron@gmail.com>",
   "license": "MIT",
   "readmeFilename": "README.md",
   "devDependencies": {
