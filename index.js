@@ -1,20 +1,21 @@
 /**
  * Module dependencies
  */
-var url = require('url')
-  , resolve = require('path').resolve
-  , join = require('path').join
-  , debug = require('debug')('connect-base');
+
+var url = require('url');
+var resolve = require('path').resolve;
+var join = require('path').join;
+var debug = require('debug')('connect-base');
 
 module.exports = function(options) {
   options = options || {};
-  
+
   // Header names
-  var hostHeader = options.host || 'x-forwarded-host'
-    , pathHeader = options.path || 'x-forwarded-path'
-    , portHeader = options.port || 'x-forwarded-port'
-    , protoHeader = options.proto || 'x-forwarded-proto';
-  
+  var hostHeader = options.host || 'x-forwarded-host';
+  var pathHeader = options.path || 'x-forwarded-path';
+  var portHeader = options.port || 'x-forwarded-port';
+  var protoHeader = options.proto || 'x-forwarded-proto';
+
   return function base(req, res, next) {
     var hostParts = req.headers.host.split(':');
 
@@ -27,12 +28,12 @@ module.exports = function(options) {
     };
 
     // Remove standard ports
-    if((base.port == 80 && base.protocol === 'http') ||
-       (base.port == 443 && base.protocol === 'https')) delete base.port;
+    if ((base.port == 80 && base.protocol === 'http') ||
+        (base.port == 443 && base.protocol === 'https')) delete base.port;
 
     // Remove trailing slashes
     if (base.pathname === '/') base.pathname = '';
-    if (base.pathname[base.pathname.length - 1] === '/') base.pathname = base.pathname.slice(0, base.pathname.length);
+    if (base.pathname[base.pathname.length - 1] === '/') base.pathname = base.pathname.slice(0, base.pathname.length - 1);
 
     debug('', base);
 
@@ -44,11 +45,15 @@ module.exports = function(options) {
       var path = Array.prototype.join.call(arguments, '/');
 
       // It's an absolue path
-      if(url.parse(path).protocol) return path;
+      if (url.parse(path).protocol) return path;
 
       // Resolve it relative to the mounted app
-      var urlLength = req.url.length === 1 ? req.originalUrl.length : -req.url.length + 1
-        , appPath = !!req.originalUrl && req.url !== req.originalUrl ? req.originalUrl.slice(0, urlLength) : '/';
+      var urlLength = req.url.length === 1
+        ? req.originalUrl.length
+        : -req.url.length + 1;
+      var appPath = !!req.originalUrl && req.url !== req.originalUrl
+        ? req.originalUrl.slice(0, urlLength)
+        : '/';
 
       // Join the base path with the app path
       var joinedPath = join(base.pathname || '/', appPath);
